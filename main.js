@@ -1,72 +1,23 @@
 #! /usr/bin/env node
 import inquirer from "inquirer";
-let accountBalance = 10000;
-const pinCode = 2345;
-let pinNumber = await inquirer.prompt([
-    {
-        name: "pin",
-        type: "number",
-        message: "Enter your pin code :"
-    }
-]);
-if (pinNumber.pin == pinCode) {
-    let accountType = await inquirer.prompt([
+let toDoList = [];
+let condition = true;
+while (condition) {
+    let listAdd = await inquirer.prompt([
         {
-            name: "account",
-            type: "list",
-            message: "Select your account type :",
-            choices: ["Current account", "Saving account"]
+            name: "addToDo",
+            type: "input",
+            message: "What do you want to add in your To-Do list?",
         },
         {
-            name: "operation",
-            type: "list",
-            message: "Select your desired option :",
-            choices: ["Withdrawl", "Balance check"]
+            name: "confirm",
+            type: "confirm",
+            message: "Do you want to add more?",
+            default: "true"
         }
     ]);
-    if (accountType.operation == "Withdrawl") {
-        let withdrawlType = await inquirer.prompt([
-            {
-                name: "method",
-                type: "list",
-                message: "Select your transaction method :",
-                choices: ["Cash withdrawl", "Fast cash"]
-            }
-        ]);
-        if (withdrawlType.method == "Cash withdrawl") {
-            let amount = await inquirer.prompt([
-                {
-                    name: "cash",
-                    type: "number",
-                    message: "Input the amount you want to withdraw :"
-                }
-            ]);
-            accountBalance -= amount.cash;
-            if (amount.cash > 10000) {
-                console.log("Your account balance is insufficient!");
-            }
-            else {
-                console.log(`Your remaining account balance is : ${accountBalance}`);
-            }
-        }
-        else if (withdrawlType.method == "Fast cash") {
-            let cash = await inquirer.prompt([
-                {
-                    name: "fCash",
-                    type: "list",
-                    message: "Select amount you want to withdraw :",
-                    choices: ["500", "1000", "3000", "5000", "10000"]
-                }
-            ]);
-            accountBalance -= cash.fCash;
-            console.log(`Your remaining account balance is : ${accountBalance}`);
-        }
-    }
-    else {
-        console.log(`Your account balance is : ${accountBalance}`);
-    }
-}
-else {
-    console.log("You've entered incorrect pin code!");
+    toDoList.push(listAdd.addToDo);
+    condition = listAdd.confirm;
+    toDoList.forEach(list1 => console.log(list1));
 }
 ;
